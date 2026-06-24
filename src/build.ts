@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { listAll, fetchDetail } from "./pokeapi.ts";
 import { SOURCES, deriveEntry, entryKey } from "./derive.ts";
+import { pokeAPISlug } from "./slug.ts";
 import type { DictionaryEntry } from "./types.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -18,12 +19,24 @@ async function main() {
   const added: DictionaryEntry[] = [];
   let skipped = 0;
   let collided = 0;
+  let prefiltered = 0;
 
   for (const { resource, type } of SOURCES) {
     const list = await listAll(resource);
-    console.log(`\n${resource}: ${list.length} resources`);
+    // Pre-filter: a list item whose slug matches a canonical entry of this type
+    // is already covered (canonical wins), so skip the detail fetch entirely.
+    const canonSlugs = new Set(
+      canonical.filter((e) => e.type === type).map((e) => pokeAPISlug(e.english)),
+    );
+    const toFetch = list.filter((i) => !canonSlugs.has(i.name));
+    prefiltered += list.length - toFetch.length;
+    console.log(
+      `\n${resource}: ${list.length} resources, ${toFetch.length} to fetch ` +
+        `(${list.length - toFetch.length} already in canonical)`,
+    );
+
     let n = 0;
-    for (const item of list) {
+    for (const item of toFetch) {
       const res = await fetchDetail(resource, item);
       const derived = deriveEntry(res, type);
       if ("skip" in derived) {
@@ -38,7 +51,7 @@ async function main() {
       have.add(key);
       added.push(derived);
       console.log(`  + ${derived.type}: ${derived.english} / ${derived.japanese}`);
-      if (++n % 200 === 0) console.log(`  …${n}/${list.length}`);
+      if (++n % 200 === 0) console.log(`  …${n}/${toFetch.length}`);
     }
   }
 
@@ -48,7 +61,8 @@ async function main() {
 
   console.log(
     `\nDone. canonical=${canonical.length} +new=${added.length} ` +
-      `(kept canonical on ${collided} collisions, skipped ${skipped} unnamed) ` +
+      `(pre-filtered ${prefiltered} already-in-canonical, ` +
+      `kept canonical on ${collided} name collisions, skipped ${skipped} unnamed) ` +
       `-> ${merged.length} entries written to dist/jisho.json`,
   );
 }

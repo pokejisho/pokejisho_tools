@@ -23,9 +23,10 @@ npm run build-dataset
 - Output: `dist/jisho.json` — the deliverable. Copy it into the iOS and web repos.
 - `data/jisho.json` is the **hand-curated canonical** layer and is never modified.
   On any collision (same type + name), the canonical entry wins.
-- Network responses are cached under `.cache/`. The first full run takes ~2 hours
-  (serial, 1.5 s between requests — deliberately gentle on PokéAPI). Re-runs reuse
-  the cache and are near-instant. Delete `.cache/` to force a fresh fetch.
+- Entries already present in `data/jisho.json` are skipped before fetching (a slug
+  is derived from each canonical name), so only genuinely new resources hit the
+  network. A cold run is ~1 hour (~2,550 requests at 1.5 s each); re-runs reuse
+  the `.cache/` and are near-instant. Delete `.cache/` to force a fresh fetch.
 - The run is resumable: if it stops, just run it again — cached resources are skipped.
 
 Deploy the result:

@@ -5,9 +5,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "fetch": "tsx src/fetch.ts",
     "build-dataset": "tsx src/build.ts",
-    "validate-romaji": "tsx src/validate-romaji.ts"
+    "validate-romaji": "tsx src/validate-romaji.ts",
+    "analyze-slugs": "tsx src/analyze-slugs.ts"
   },
   "license": "MIT",
   "devDependencies": {

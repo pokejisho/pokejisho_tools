@@ -70,10 +70,20 @@ This empirically locks "the same strategy."
 
 ## Pipeline (separate modules)
 
-1. **fetch** — list each resource (`?limit=100000`), fetch each detail URL,
-   cache raw JSON to `.cache/{type}/{id}.json`. **Serial, 1.5 s between requests**,
-   retry with exponential backoff (2→4→8→16 s, ~5 attempts), identifying
-   User-Agent. Re-runs skip cached IDs (idempotent, resumable).
+1. **fetch** — list each resource (`?limit=100000`), then for each list item
+   fetch its detail URL, caching raw JSON to `.cache/{type}/{id}.json`. **Serial,
+   1.5 s between requests**, retry with exponential backoff (2→4→8→16 s, ~5
+   attempts), identifying User-Agent. Re-runs skip cached IDs (idempotent,
+   resumable).
+
+   **Pre-filter optimization:** before fetching a list item's detail, derive a
+   PokéAPI slug from each canonical entry's English name (`src/slug.ts`, mirroring
+   the iOS app's `pokeAPISlug` plus é/♀/♂ handling) and skip any list item whose
+   slug is already covered by canonical. Since canonical wins anyway, those
+   details never need fetching — turning a ~5,700-request cold run into ~2,550.
+   This is purely an optimization: imperfect slug derivation only costs a
+   redundant fetch, never a wrong result, because the post-fetch `(type, english)`
+   merge is the real de-duplication.
 2. **derive** — map cached API resources → jisho entries (fields above).
 3. **romaji** — kana→romaji converter (library + hand-rules), validated as above.
 4. **merge** — overlay derived onto canonical; **canonical wins**. Merge key =
