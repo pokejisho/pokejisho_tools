@@ -48,6 +48,21 @@ Currently ~99.3% exact match; the residual is a set of Gen 9 entries the origina
 hand-romanized with a looser convention. Those are preserved via canonical
 precedence, so the converter only affects genuinely new entries.
 
+## Find canonical typos
+
+Flags entries whose Japanese name matches a PokéAPI resource but whose English
+differs — i.e. a misspelled English name in `data/jisho.json` (e.g. canonical
+`Ninetails` vs. PokéAPI `Ninetales`):
+
+```bash
+npm run find-typos                       # full scan, every category (~1h cold)
+npm run find-typos -- pokemon-species    # quick scan of one category
+```
+
+The full scan fetches the same details `build-dataset` needs, so it also warms
+the cache — running `build-dataset` afterward is near-instant. Fix any reported
+typos in `data/jisho.json`, then re-run.
+
 ## New entries each year
 
 After running, review the `+ ...` lines in the build output (the new entries).
