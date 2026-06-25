@@ -2188,7 +2188,7 @@
     "japanese": "ハウオリシティ",
     "katakana": "ハウオリシティ",
     "romaji": "hauorishitei",
-    "english": "Hau'oli City"
+    "english": "Hau’oli City"
   },
   {
     "type": "location",
@@ -4901,7 +4901,7 @@
   },
   {
     "type": "item",
-    "english": "Parcel",
+    "english": "Oak’s Parcel",
     "japanese": "おとどけもの",
     "katakana": "オトドケモノ",
     "romaji": "otodokemono"
@@ -5930,7 +5930,7 @@
   },
   {
     "type": "item",
-    "english": "Devon Parts",
+    "english": "Devon Goods",
     "japanese": "デボンのにもつ",
     "katakana": "デボンノニモツ",
     "romaji": "debonnonimotsu"
@@ -12209,7 +12209,7 @@
   },
   {
     "type": "item",
-    "english": "Pokémon Box",
+    "english": "Pokémon Box Link",
     "japanese": "ポケモンボックス",
     "katakana": "ポケモンボックス",
     "romaji": "pokemonbokkusu"
@@ -28557,7 +28557,7 @@
     "japanese": "迷いの森",
     "katakana": "マヨイノモリ",
     "romaji": "mayoinomori",
-    "english": "Lostlorn Forest"
+    "english": "Winding Woods"
   },
   {
     "type": "location",
