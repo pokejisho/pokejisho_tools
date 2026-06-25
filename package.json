@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "build-dataset": "tsx src/build.ts",
+    "distribute": "tsx src/distribute.ts",
     "validate-romaji": "tsx src/validate-romaji.ts",
     "analyze-slugs": "tsx src/analyze-slugs.ts",
     "find-typos": "tsx src/find-typos.ts"
