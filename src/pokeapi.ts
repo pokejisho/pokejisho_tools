@@ -7,7 +7,7 @@ const CACHE_DIR = join(here, "..", ".cache");
 
 const BASE = "https://pokeapi.co/api/v2";
 const USER_AGENT =
-  "PokeJisho-updater (https://github.com/MichaelCharles/pokejisho)";
+  "PokeJisho-updater (https://github.com/pokejisho)";
 
 /** Delay between network requests (ms). Deliberately gentle — far under PokéAPI's
  *  historical 100/min. Cached reads incur no delay. */
