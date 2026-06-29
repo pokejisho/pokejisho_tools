@@ -10,6 +10,7 @@ const DIST = join(here, "..", "dist", "jisho.json");
 const SIBLINGS = join(here, "..", "..");
 const WEB = join(SIBLINGS, "pokejisho_web");
 const IOS = join(SIBLINGS, "pokejisho_ios");
+const ANDROID = join(SIBLINGS, "pokejisho_android");
 
 const TARGETS = {
   "web raw.json": join(WEB, "js", "raw.json"),
@@ -20,6 +21,14 @@ const TARGETS = {
     "Sources",
     "PokeJishoKit",
     "Resources",
+    "jisho.json",
+  ),
+  "android jisho.json": join(
+    ANDROID,
+    "app",
+    "src",
+    "main",
+    "assets",
     "jisho.json",
   ),
 };
@@ -54,9 +63,10 @@ function main() {
   const json = readFileSync(DIST, "utf8");
   const entries: DictionaryEntry[] = JSON.parse(json);
 
-  // raw.json and the iOS bundle resource are plain JSON, byte-identical to dist.
+  // raw.json and the iOS/Android bundle resources are plain JSON, byte-identical to dist.
   writeFileSync(TARGETS["web raw.json"], json);
   writeFileSync(TARGETS["ios jisho.json"], json);
+  writeFileSync(TARGETS["android jisho.json"], json);
   // jisho-data.js wraps the same data in a JS variable for the web search script.
   writeFileSync(TARGETS["web jisho-data.js"], toJishoDataJs(entries));
 

@@ -81,3 +81,8 @@ export async function fetchDetail(
 ): Promise<NamedResource> {
   return (await cached(`${resource}/${item.name}.json`, item.url)) as NamedResource;
 }
+
+/** Whether a resource detail is already on disk (no network). */
+export function isDetailCached(resource: string, item: ListItem): boolean {
+  return existsSync(join(CACHE_DIR, `${resource}/${item.name}.json`));
+}
